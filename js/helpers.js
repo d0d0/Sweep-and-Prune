@@ -1,13 +1,11 @@
-Function.prototype.inheritsFrom = function( parentClassOrObject ){
-    if ( parentClassOrObject.constructor == Function )
-    {
+Function.prototype.inheritsFrom = function (parentClassOrObject) {
+    if (parentClassOrObject.constructor == Function) {
         //Normal Inheritance
         this.prototype = new parentClassOrObject;
         this.prototype.constructor = this;
         this.prototype.parent = parentClassOrObject.prototype;
     }
-    else
-    {
+    else {
         //Pure Virtual Inheritance
         this.prototype = parentClassOrObject;
         this.prototype.constructor = this;
@@ -32,4 +30,10 @@ if (!window.requestAnimationFrame) {
 
     })();
 
+}
+
+function random_color() {
+    var rint = Math.round(0xffffff * Math.random());
+
+    return ('0x' + rint.toString(16)).replace(/^#0([0-9a-f]{6})$/i, '#$1');
 }

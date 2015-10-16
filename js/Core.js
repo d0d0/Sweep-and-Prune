@@ -11,6 +11,7 @@ function Core() {
     this._rectangles = [];
     this._stage = new PIXI.Stage(0x66FF99, interactive);
     this._renderer = PIXI.autoDetectRenderer(window.innerWidth, window.innerHeight);
+    this._collisionAlgo = new AABB();
 
     document.body.appendChild(this._renderer.view);
     document.body.appendChild(this._stats.domElement);
@@ -46,6 +47,10 @@ Core.prototype = {
 
         let that = this;
         that._moveObjects();
+        that._collisionAlgo.getCollisions(that._rectangles).forEach(function (obj) {
+            that._rectangles[obj.a].setColor(0xFF0000);
+            that._rectangles[obj.b].setColor(0xFF0000);
+        });
         that._renderer.render(that._stage);
 
         this._stats.end();

@@ -1,16 +1,18 @@
 "use strict";
 
 function Rectangle(x, y) {
-    this._velocityX = Math.random() * 5 - 2.5;
-    this._velocityY = Math.random() * 5 - 2.5;
+    this._velocity = {
+        x: Math.random() * 5 - 2.5,
+        y: Math.random() * 5 - 2.5,
+    };
     this._width = 30;
-    this._heigh = 30;
+    this._height = 30;
     this._color = 0xFFFF00;
     this._graphics = new PIXI.Graphics();
     this._graphics.interactive = true;
     this._graphics.click = this.onClick;
     this._graphics.beginFill(this._color);
-    this._graphics.drawRect(this.x, this.y, this._width, this._heigh);
+    this._graphics.drawRect(this.x, this.y, this._width, this._height);
     this._graphics._rectangle = this;
 }
 
@@ -24,29 +26,23 @@ Rectangle.prototype = {
         obj.target._rectangle.setColor(random_color());
     },
     updatePosition: function () {
-        let changed = false;
 
-        this._graphics.x += this._velocityX;
-        this._graphics.y += this._velocityY;
+        this._graphics.x += this._velocity.x;
+        this._graphics.y += this._velocity.y;
         if (this._graphics.x < 0) {
-            this._velocityX *= -1;
-            changed = true;
+            this._velocity.x *= -1;
         }
         if (this._graphics.y < 0) {
-            this._velocityY *= -1;
-            changed = true;
+            this._velocity.y *= -1;
         }
-        if (this._graphics.x + this._width > window.innerWidth && this._velocityX > 0) {
-            this._velocityX *= -1;
-            changed = true;
+        if (this._graphics.x + this._width > window.innerWidth && this._velocity.x > 0) {
+            this._velocity.x *= -1;
         }
-        if (this._graphics.y + this._heigh > window.innerHeight && this._velocityY > 0) {
-            this._velocityY *= -1;
-            changed = true;
+        if (this._graphics.y + this._height > window.innerHeight && this._velocity.y > 0) {
+            this._velocity.y *= -1;
         }
-        if (changed) {
-            this.setColor(random_color());
-        }
+
+        this.setColor(0x00FF00);
     },
     getX: function () {
 
@@ -55,6 +51,14 @@ Rectangle.prototype = {
     getY: function () {
 
         return this._graphics.y;
+    },
+    getWidth: function () {
+
+        return this._width;
+    },
+    getHeight: function () {
+
+        return this._height;
     },
     setX: function (x) {
 
@@ -68,6 +72,6 @@ Rectangle.prototype = {
         this._color = color;
         this._graphics.clear();
         this._graphics.beginFill(this._color);
-        this._graphics.drawRect(this.x, this.y, this._width, this._heigh);
+        this._graphics.drawRect(this.x, this.y, this._width, this._height);
     }
 };

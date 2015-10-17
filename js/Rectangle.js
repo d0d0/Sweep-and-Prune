@@ -3,7 +3,7 @@
 function Rectangle(x, y) {
     this._velocity = {
         x: Math.random() * 5 - 2.5,
-        y: Math.random() * 5 - 2.5,
+        y: Math.random() * 5 - 2.5
     };
     this._width = 30;
     this._height = 30;
@@ -23,12 +23,14 @@ Rectangle.prototype = {
         return this._graphics;
     },
     onClick: function (obj) {
+
         obj.target._rectangle.setColor(random_color());
     },
     updatePosition: function () {
 
         this._graphics.x += this._velocity.x;
         this._graphics.y += this._velocity.y;
+
         if (this._graphics.x < 0) {
             this._velocity.x *= -1;
         }
@@ -72,6 +74,7 @@ Rectangle.prototype = {
         if (color == this._color) {
             return;
         }
+
         this._color = color;
         this._graphics.clear();
         this._graphics.beginFill(this._color);

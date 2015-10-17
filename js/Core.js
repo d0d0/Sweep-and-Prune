@@ -37,6 +37,10 @@ Core.prototype = {
 
         this._renderer.resize(window.innerWidth, window.innerHeight);
     },
+    setAlgo: function (newAlgo) {
+
+        this._collisionAlgo = newAlgo;
+    },
     _moveObjects: function () {
         this._rectangles.forEach(function (obj) {
             obj.updatePosition();

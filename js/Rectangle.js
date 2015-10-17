@@ -69,6 +69,9 @@ Rectangle.prototype = {
         this._graphics.y = y;
     },
     setColor: function (color) {
+        if (color == this._color) {
+            return;
+        }
         this._color = color;
         this._graphics.clear();
         this._graphics.beginFill(this._color);

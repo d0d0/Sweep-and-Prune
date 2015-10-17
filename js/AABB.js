@@ -10,10 +10,7 @@ AABB.prototype = {
         let pairs = [];
 
         for (var i = 0; i < rectangles.length; i++) {
-            for (var j = i; j < rectangles.length; j++) {
-                if (i === j) {
-                    continue;
-                }
+            for (var j = i + 1; j < rectangles.length; j++) {
                 var overLapX = this._valueOverlap(rectangles[i].getX(), rectangles[j].getX(), rectangles[j].getX() + rectangles[j].getWidth()) ||
                         this._valueOverlap(rectangles[j].getX(), rectangles[i].getX(), rectangles[i].getX() + rectangles[i].getWidth()),
                     overLapY = this._valueOverlap(rectangles[i].getY(), rectangles[j].getY(), rectangles[j].getY() + rectangles[j].getHeight()) ||

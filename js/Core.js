@@ -11,7 +11,7 @@ function Core() {
     this._rectangles = [];
     this._stage = new PIXI.Stage(0x66FF99, interactive);
     this._renderer = PIXI.autoDetectRenderer(window.innerWidth, window.innerHeight);
-    this._collisionAlgo = new AABB();
+    this._collisionAlgo = new SAP();
 
     document.body.appendChild(this._renderer.view);
     document.body.appendChild(this._stats.domElement);
@@ -27,11 +27,11 @@ Core.prototype = {
     },
     onResize: function () {
         this._rectangles.forEach(function (obj) {
-            if (obj.getX() >= window.innerWidth) {
-                obj.setX(window.innerWidth);
+            if (obj.getX() + obj.getWidth() >= window.innerWidth) {
+                obj.setX(window.innerWidth - obj.getWidth());
             }
-            if (obj.getY() >= window.innerHeight) {
-                obj.setY(window.innerHeight);
+            if (obj.getY() + obj.getWidth() >= window.innerHeight) {
+                obj.setY(window.innerHeight - obj.getHeight());
             }
         });
 
@@ -42,25 +42,25 @@ Core.prototype = {
         this._collisionAlgo = newAlgo;
     },
     _moveObjects: function () {
-        this._rectangles.forEach(function (obj) {
+        this._rectangles.forEach(function (obj, index) {
             obj.updatePosition();
+            obj.index = index;
         });
     },
     render: function () {
         this._stats.begin();
+        this._moveObjects();
 
-        let that = this;
-        that._moveObjects();
-        that._collisionAlgo.getCollisions(that._rectangles).forEach(function (obj) {
-            that._rectangles[obj.a].setColor(0xFF0000);
-            that._rectangles[obj.b].setColor(0xFF0000);
-        });
-        that._renderer.render(that._stage);
+        this._collisionAlgo.getCollisions(this._rectangles, this._stage).forEach(function (obj) {
+            this._rectangles[obj.a].setColor(0xFF0000);
+            this._rectangles[obj.b].setColor(0xFF0000);
+        }.bind(this));
+        this._renderer.render(this._stage);
 
         this._stats.end();
 
         requestAnimationFrame(function () {
-            that.render();
-        });
+            this.render();
+        }.bind(this));
     }
 };

@@ -27,6 +27,7 @@ AABB.prototype = {
         return pairs;
     },
     _valueOverlap: function (value, min, max) {
+
         return value >= min && value <= max;
     }
 };

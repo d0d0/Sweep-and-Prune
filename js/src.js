@@ -2,7 +2,7 @@
 
 var core = new Core();
 
-for (var i = 0; i < 150; i++) {
+for (var i = 0; i < 4; i++) {
     core.addRectangle();
 }
 

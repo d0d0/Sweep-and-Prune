@@ -3,8 +3,8 @@
 let BreakException = {};
 
 function SAP(size) {
-    this.pairManagementX = new MatrixPairManagement(size);
-    this.pairManagementY = new MatrixPairManagement(size);
+    this.pairManagementX = new HashPairManagement(size);
+    this.pairManagementY = new HashPairManagement(size);
 }
 
 SAP.prototype = {
@@ -81,12 +81,15 @@ SAP.prototype = {
         return this._valueOverlap(x1, x2, s2) || this._valueOverlap(x2, x1, s1);
     },
     _reportPairs: function (axis, a) {
+        let currentPoint,
+            current,
+            greater,
+            overlap,
+            i;
         for (let j = 1; j < axis.length; j++) {
-            let currentPoint = axis[j],
-                current = currentPoint.axis,
-                greater,
-                overlap,
-                i = j - 1;
+            currentPoint = axis[j];
+            current = currentPoint.axis;
+            i = j - 1;
             while (i >= 0 && axis[i].axis > current) {
                 greater = axis[i];
 
@@ -125,19 +128,7 @@ SAP.prototype = {
         this.pairManagementY.clear();
         this._reportPairs(this._axisListX, 'x');
         this._reportPairs(this._axisListY, 'y');
-        let pairsX = this.pairManagementX.getPairs();
-        let pairsY = this.pairManagementY.getPairs();
-        let result = [];
-        for (let i = 0; i < pairsX.length; i++) {
-            for (let j = 0; j < pairsX[i].length; j++) {
-                if (i != j && pairsX[i][j] && (pairsY[i][j] || pairsY[j][i])) {
-                    result.push({
-                        a: i,
-                        b: j
-                    });
-                }
-            }
-        }
+        let result = this.pairManagementX.intersect(this.pairManagementY);
 
         return result;
     }

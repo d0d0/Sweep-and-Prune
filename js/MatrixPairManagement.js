@@ -33,19 +33,22 @@ MatrixPairManagement.prototype = {
 
         return this._matrix[id1][id2] || this._matrix[id2][id1];
     },
-    getPairs: function () {
+    intersect: function (matrixPairManagement) {
         let result = [];
+        for (let i = 0; i < this._matrix.length; i++) {
+            for (let j = 0; j < this._matrix[i].length; j++) {
+                if (i != j && this._matrix[i][j] && matrixPairManagement.findPair(i, j)) {
+                    result.push({
+                        a: i,
+                        b: j
+                    });
+                }
+            }
+        }
 
-        /*for (let i = 0; i < this._matrix.length; i++) {
-         for (let j = 0; j < this._matrix[i].length; j++) {
-         if (this._matrix[i][j]) {
-         result.push({
-         a: i,
-         b: j
-         });
-         }
-         }
-         }*/
+        return result;
+    },
+    getPairs: function () {
 
         return this._matrix;
     },

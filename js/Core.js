@@ -11,7 +11,7 @@ function Core(size) {
     this._rectangles = [];
     this._stage = new PIXI.Stage(0x66FF99, interactive);
     this._renderer = PIXI.autoDetectRenderer(window.innerWidth, window.innerHeight);
-    this._collisionAlgo = new SAP(size);
+    this._collisionAlgo = new AABB();
 
     document.body.appendChild(this._renderer.view);
     document.body.appendChild(this._stats.domElement);
@@ -38,9 +38,19 @@ Core.prototype = {
 
         this._renderer.resize(window.innerWidth, window.innerHeight);
     },
+    algo: function () {
+
+    },
+    management: function () {
+
+    },
     setAlgo: function (newAlgo) {
 
         this._collisionAlgo = newAlgo;
+    },
+    getAlgo: function () {
+
+        return this._collisionAlgo;
     },
     _moveObjects: function () {
         this._rectangles.forEach(function (obj, index) {

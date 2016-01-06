@@ -9,6 +9,15 @@ function SAP(size) {
 
 SAP.prototype = {
     constructor: SAP,
+    setPairManagement: function(pairManagement){
+        if(pairManagement == 'matrix'){
+            this.pairManagementX = new MatrixPairManagement(size);
+            this.pairManagementY = new MatrixPairManagement(size);
+        }else{
+            this.pairManagementX = new HashPairManagement(size);
+            this.pairManagementY = new HashPairManagement(size);
+        }
+    },
     _createAxisList: function (rectangles) {
         this._listSortedByX = this._copyArray(rectangles).sort(this._compareByXAxis);
         this._listSortedByY = this._copyArray(rectangles).sort(this._compareByYAxis);

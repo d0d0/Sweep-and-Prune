@@ -1,6 +1,6 @@
 "use strict";
 
-function Core() {
+function Core(size) {
     var interactive = true;
 
     this._stats = new Stats();
@@ -11,7 +11,7 @@ function Core() {
     this._rectangles = [];
     this._stage = new PIXI.Stage(0x66FF99, interactive);
     this._renderer = PIXI.autoDetectRenderer(window.innerWidth, window.innerHeight);
-    this._collisionAlgo = new SAP();
+    this._collisionAlgo = new SAP(size);
 
     document.body.appendChild(this._renderer.view);
     document.body.appendChild(this._stats.domElement);
@@ -21,6 +21,7 @@ Core.prototype = {
     constructor: Core,
     addRectangle: function () {
         var rect = new Rectangle(10, 10);
+        rect.index = this._rectangles.length;
 
         this._rectangles.push(rect);
         this._stage.addChild(rect.getGraphics());
@@ -44,17 +45,17 @@ Core.prototype = {
     _moveObjects: function () {
         this._rectangles.forEach(function (obj, index) {
             obj.updatePosition();
-            obj.index = index;
         });
     },
     render: function () {
         this._stats.begin();
         this._moveObjects();
 
-        this._collisionAlgo.getCollisions(this._rectangles, this._stage).forEach(function (obj) {
+        this._collisionAlgo.getCollisions(this._rectangles).forEach(function (obj) {
             this._rectangles[obj.a].setColor(0xFF0000);
             this._rectangles[obj.b].setColor(0xFF0000);
         }.bind(this));
+
         this._renderer.render(this._stage);
 
         this._stats.end();

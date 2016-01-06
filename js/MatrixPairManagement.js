@@ -20,26 +20,34 @@ MatrixPairManagement.prototype = {
     removePair: function (id1, id2) {
 
         this._matrix[id1][id2] = false;
+        this._matrix[id2][id1] = false;
+    },
+    clear: function () {
+        for (let i = 0; i < size; i++) {
+            for (let j = 0; j < size; j++) {
+                this._matrix[i][j] = false;
+            }
+        }
     },
     findPair(id1, id2){
 
-        return this._matrix[id1][id2];
+        return this._matrix[id1][id2] || this._matrix[id2][id1];
     },
     getPairs: function () {
         let result = [];
 
-        for (let i = 0; i < this._matrix.length; i++) {
-            for (let j = 0; j < this._matrix[i].length; j++) {
-                if (this._matrix[i][j]) {
-                    result.push({
-                        a: i,
-                        b: j
-                    });
-                }
-            }
-        }
+        /*for (let i = 0; i < this._matrix.length; i++) {
+         for (let j = 0; j < this._matrix[i].length; j++) {
+         if (this._matrix[i][j]) {
+         result.push({
+         a: i,
+         b: j
+         });
+         }
+         }
+         }*/
 
-        return result;
+        return this._matrix;
     },
     toString: function () {
 
